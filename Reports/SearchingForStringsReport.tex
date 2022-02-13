@@ -18,6 +18,8 @@
     }
     
 \usepackage{listings}
+\usepackage{textgreek} % added so I could add the epsilon in text
+\usepackage{tipa} % added so I could add the pipe symbol |
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -129,7 +131,122 @@ I tackled this problem by first breaking down the chart, to understand what I wa
 
 \subsection{Week 2}
 
-\ldots
+\subsubsection{Homework 2.1.1 Composing Automata}
+The homework discussed in this section can be found \href{https://hackmd.io/@alexhkurz/ryV_FU7XI}{here}.\\
+\textbf{Exercise 2.3.4}\\
+Part 1 of this assignment is to answer the following questions:\\
+\\
+Find NFAs that recognize:\\
+\includegraphics[scale=0.3]{Questions 2-3-4.png}\\
+
+\textbf{Part A:}\\
+The NFA I created is outlined in the diagram below.
+\begin{center}
+    \includegraphics[scale=0.5]{Diagram 2-1-1a.png}
+\end{center}
+I used the "..." as a way to simplify the diagram and make it more readable by not writing every state, but enough to understand the diagram. 
+The idea of the NFA is to ensure that the only way to reach the success state is to have crossed over the last digit before. 
+The most helpful part for my understanding was to look at the transition to the success state has the same condition as the transition to the mid-state. 
+This ensures that the digit has been seen before in the string.\\
+\\
+\textbf{Part B:}\\
+The NFA I created is outlined in the diagram below.
+\begin{center}
+    \includegraphics[scale=0.45]{Diagram 2-1-1b.png}
+\end{center}
+The main idea of this NFA is to ensure that the only way to reach the success state is to have never seen the last digit before in the string.
+The part that helped me understand this NFA the most is knowing that it is effectively the complement of part A. 
+So to accomplish this, I used the same foundation as the one from part A, but the transitions from the initial state are all digits except the one I'm looking for. For example, the top path is only successful if the final digit is zero, so the first transition includes all numbers 1 through 9, to prevent the possibility of 0 being seen elsewhere in the string. In addition to this, I added another state after the success to prevent the success state from firing if the transition is taken before the end of the string.\\
+\\
+\textbf{Part C:}\\
+The NFA I created is outlined in the diagram below.
+\begin{center}
+    \includegraphics[scale=0.5]{Diagram 2-1-1c.png}
+\end{center}
+The main challenge with this problem is to count multiples of 4, including 0. 
+I tackled this challenge by having 3 states with 4 transitions that effectively "count" the digits between 0's.
+Since the problem states that the entire string doesn't have to be encased by the 0's, I have loops on the initial and success states that enable the NFA to count an entire word that contains the 0's.\\
+\\
+\textbf{Exercise 2.5.3}\\
+Part 2 of this assignment is to answer the following questions:\\
+\\
+Find \textepsilon-NFAs that recognize:\\
+\includegraphics[scale=0.6]{Questions 2-5-3.png}\\
+\\
+\textbf{Part A:}\\
+The NFA that I created is outlined in the diagram below.
+\begin{center}
+    \includegraphics[scale=0.5]{Diagram 2-1-2a.png}
+\end{center}
+The main challenge with this NFA is the fact that there can be zero of each character. This diagram gets complex very quickly because we are looking for a pattern of alphabetical strings, but there is no guarantee that it will contain an 'a', 'b', or 'c'.
+While solving this problem, there was some confusion around the phrase "consisting of." I chose to take that similar to "having substrings of" rather than "being entirely made of." If it meant "a string entirely made of a's, b's, and c's in alphabetical order", then the diagram would be slightly different and less complex.\\
+
+\textbf{Part B:}\\
+The NFA that I created is outlined in the diagram below.
+\begin{center}
+    \includegraphics[scale = 0.5]{Diagram 2-1-2b.png}
+\end{center}
+This problem had "composition" written all over it. From the start, I noticed that this would be two automata working in parallel. 
+The top section is what identifies the "01" repeating pattern while the bottom section identifies the "010" pattern. 
+To "join" these two sections, I performed epsilon jumps to the beginning of each section immediately from the initial state.
+To simplify the possibility of a repeating pattern, I simply jump from the success states back to that section's starting state.\\
+
+\textbf{Part C:}\\
+The NFA that I created is outlined in the diagram below.
+\begin{center}
+    \includegraphics[scale = 0.5]{Diagram 2-1-2c.png}
+\end{center}
+The main challenge with this problem was figuring out how to count 10 positions from the last. If I were implementing this program, I would simply iterate from the back of the string rather than the start, but we are unable to do that with our current setup. 
+To overcome this, I created a loop of both 0's and 1's on the initial state to allow for strings longer than 10.
+I then have 9 states (10 transitions) that upon finding a 1, enter the success state. If one of those states finds a 0, it will simply move onto the next position.\\
+
+\subsubsection{Homework 2.2.1 Regular Expressions}
+The homework discussed in this section can be found \href{https://hackmd.io/@alexhkurz/S1EVYe7bO}{here}.\\
+This homework was to write regular expressions for the languages in exercises 2.3.4 and 2.5.3 (the problems from the previous homework).\\
+\textbf{Exercise 2.3.4}\\
+\textbf{Part A:}
+The regular expression for part A of exercise 2.3.4 is as follows:
+\begin{center}
+    \textit{( 0 + ... 9) * ( 0 ( 0 + ... 9 ) * 0 + ... )}
+\end{center}
+(We had gone over this in class.) The "..." is used to simplify and shorten the writing of the expression rather than writing all the digits 0 through 9.
+
+\textbf{Part B:}
+The regular expression for part B of exercise 2.3.4 is as follows:
+\begin{center}
+    \textit{( 1 + ... 9 ) * 0  + ( 0 + 2 + ...9 ) * 1 + ( 0 + 1 + 3 + ...9 ) * 2 + .... (0 + ...8 ) * 9 + \textepsilon }
+\end{center}
+This regular expression gets all the strings where the last digit has no appeared before in the string.
+
+\textbf{Part C:}
+\begin{equation}
+    (0+1)^*\ 0\ ((0+1)^4)^*\ 0\ (0+1)^*
+\end{equation}
+For this problem, I needed some help. I utilized the website \href{https://regex101.com/}{Regex101} to help me create this regular expression. Since the above expression is not directly applicable in most programming languages, the regular expression I came up with in Regex is this:" \textit{.* 0 ((0\textpipe1)\{4\})* 0 .*} ".
+
+\textbf{Exercise 2.5.3}\\
+\textbf{Part A:}\\
+The regular expression for part A is as follows:
+\begin{center}
+   \textit{a* b* c*}
+\end{center}
+This was was very simple because the * is what allows the preceding character to appear anywhere between 0 and unlimited number of times.\\
+
+\textbf{Part B:}\\
+The regular expression for part B is as follows:
+\begin{center}
+    \textit{(01)(01)* + (010)(010)*}
+\end{center}
+For this problem, I needed some help again. The regular expression I came up with in Regex101 is this: \textit{(01)(01)+\ \textpipe\ (010)(010)+}\\
+
+\textbf{Part C:}\\
+The regular expression for part C is as follows:
+\begin{equation}
+    (0+1)^* 1 (0+1)^n\ ,\ where\ 0 <= n <= 9
+\end{equation}
+
+Since this question says that the number 1 must appear in the last 10 digits and we have the ability to use exponents in our definition, I'm using N as a way to ensure that the 1 can show up anywhere in the last 10 positions. I also had some help from \href{https://regex101.com/}{Regex101} for this problem and the equivalent expression I got in Regex101 while I was working on this problem was " \textit{.* 1 (1\textpipe0)\{0,9\}\$} ".
+
 
 \section{Project}
 
