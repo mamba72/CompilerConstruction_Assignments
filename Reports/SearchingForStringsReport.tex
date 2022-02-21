@@ -247,6 +247,75 @@ The regular expression for part C is as follows:
 
 Since this question says that the number 1 must appear in the last 10 digits and we have the ability to use exponents in our definition, I'm using N as a way to ensure that the 1 can show up anywhere in the last 10 positions. I also had some help from \href{https://regex101.com/}{Regex101} for this problem and the equivalent expression I got in Regex101 while I was working on this problem was " \textit{.* 1 (1\textpipe0)\{0,9\}\$} ".
 
+\subsection{Week 3}
+\subsubsection{Homework 3.1 Converting NFAs to DFAs}
+The homework discussed in this section can be found \href{https://hackmd.io/@alexhkurz/HylLKujCP}{here}.\\
+\textbf{Exercise 2.3.1}\\
+Part 1 of this assignment is to answer the following question:
+\begin{center}
+    \includegraphics[scale=0.25]{Question231Chart.png}
+\end{center}
+
+The diagram for the DFA can be found below:
+\begin{center}
+    \includegraphics[scale=0.55]{Diagram 2-3-1 DFA.png}
+\end{center}
+\\
+\textbf{Exercise 2.3.2}
+Part 2 of this assignment is to answer the following question:
+\begin{center}
+    \includegraphics[scale=0.25]{Question232Chart.png}
+\end{center}
+
+The diagram for the DFA can be found below:
+\begin{center}
+    \includegraphics[scale=0.5]{Diagram 2-3-2 DFA.png}
+\end{center}
+\\
+\textbf{Exercise Converting NFAs to DFAs in Haskell}
+
+Part 2 of this assignment is to complete the following task:
+\begin{center}
+"Put the definitions of dfa\_initial, dfa\_final, dfa\_delta in the report and explain your code in a paragraph. Also put your modified version of automata05.hs in your github repository.)
+
+The file automata05 provides a template, in which you have to modify lines 71, 72, 73. Complete the definition of nfa2dfa as described in the three bullet points above and test it with various examples."
+\end{center}
+
+My code can be seen below:
+
+\begin{lstlisting}[language=Haskell]
+-- convert an NFA to a DFA
+nfa2dfa :: NFA s -> DFA [s]
+nfa2dfa nfa = DFA {
+  -- exercise: correct the next three definitions 
+  dfa_initial = [nfa_initial nfa],
+  --dfa_final = let final qs = True in final,
+  dfa_final = 
+   let 
+    --final var1 var2 = (var1 var2)
+    --final nfa = disjunction nfa
+    --final 
+    --final [s] = disjunction(nfa_final s)
+        --final (q:qs) = final qs
+      --final var1 = (final (nfa_final var1))
+      --final qs = [nfa]
+      final qs = map (disjunction) (qs)
+      
+
+
+   in final,
+  dfa_delta = 
+   let 
+    delta qs c = qs 
+    --delta [] c = 
+    --delta (q:qs) c = 
+   in delta }
+\end{lstlisting}
+
+Sadly, I was unable to complete this section. I am confident in my answer for dfa\_initial, but I'm far from confident for dfa\_final and dfa\_delta. 
+I tried to comment all of my attempts in order to show the many thought processes I had. 
+I also hope that one of them was close. I think the hardest part for me was understanding the data types of all of the variables and knowing what was being passed into the function in the first place. 
+I was really struggling with understanding how to use what felt like Object Oriented Programming inside of a functional language. 
 
 \section{Project}
 
