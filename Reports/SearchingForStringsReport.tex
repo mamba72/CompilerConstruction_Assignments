@@ -20,6 +20,10 @@
 \usepackage{listings}
 \usepackage{textgreek} % added so I could add the epsilon in text
 \usepackage{tipa} % added so I could add the pipe symbol |
+\usepackage{bussproofs}
+\usepackage{multicol} % added to do columns
+\usepackage[backend=biber,style=alphabetic,sorting=ynt]{biblatex}
+\addbibresource{citations.bib}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -144,6 +148,18 @@ The NFA I created is outlined in the diagram below.
 \begin{center}
     \includegraphics[scale=0.5]{Diagram 2-1-1a.png}
 \end{center}
+
+Included in my diagram is the following definition for some of the notation.
+\begin{center}
+    Where $\Sigma := \{0+1+2+3+4+5+6+7+8+9\}$ 
+\end{center}
+
+The regular expression for part A of exercise 2.3.4 is as follows:
+\begin{center}
+    \textit{( 0 + ... 9) * ( 0 ( 0 + ... 9 ) * 0 + ... )}
+\end{center}
+(We had gone over this in class.) The "..." is used to simplify and shorten the writing of the expression rather than writing all the digits 0 through 9.
+\\
 I used the "..." as a way to simplify the diagram and make it more readable by not writing every state, but enough to understand the diagram. 
 The idea of the NFA is to ensure that the only way to reach the success state is to have crossed over the last digit before. 
 The most helpful part for my understanding was to look at the transition to the success state has the same condition as the transition to the mid-state. 
@@ -152,8 +168,17 @@ This ensures that the digit has been seen before in the string.\\
 \textbf{Part B:}\\
 The NFA I created is outlined in the diagram below.
 \begin{center}
-    \includegraphics[scale=0.45]{Diagram 2-1-1b.png}
+    \includegraphics[scale=0.45]{Diagram 2-1-1b.png}\\
+    Where $\{1-9\}:= 0+1+2+3+4+5+6+7+8+9$ \\
+    $\epsilon ::= \{1-9\}*0 + \{0,2-8\}*1+...\{0-8\}*9$
 \end{center}
+
+The regular expression for part B of exercise 2.3.4 is as follows:
+\begin{center}
+    \textit{( 1 + ... 9 ) * 0  + ( 0 + 2 + ...9 ) * 1 + ( 0 + 1 + 3 + ...9 ) * 2 + .... (0 + ...8 ) * 9 + \textepsilon }
+\end{center}
+This regular expression gets all the strings where the last digit has no appeared before in the string.
+\\
 The main idea of this NFA is to ensure that the only way to reach the success state is to have never seen the last digit before in the string.
 The part that helped me understand this NFA the most is knowing that it is effectively the complement of part A. 
 So to accomplish this, I used the same foundation as the one from part A, but the transitions from the initial state are all digits except the one I'm looking for. For example, the top path is only successful if the final digit is zero, so the first transition includes all numbers 1 through 9, to prevent the possibility of 0 being seen elsewhere in the string. In addition to this, I added another state after the success to prevent the success state from firing if the transition is taken before the end of the string.\\
@@ -163,6 +188,12 @@ The NFA I created is outlined in the diagram below.
 \begin{center}
     \includegraphics[scale=0.5]{Diagram 2-1-1c.png}
 \end{center}
+The regular expression for part C of exercise 2.3.4 is as follows:
+\begin{equation}
+    (0+1)^*\ 0\ ((0+1)^4)^*\ 0\ (0+1)^*
+\end{equation}
+For this problem, I needed some help. I utilized the website \href{https://regex101.com/}{Regex101} to help me create this regular expression. Since the above expression is not directly applicable in most programming languages, the regular expression I came up with in Regex is this:" \textit{.* 0 ((0\textpipe1)\{4\})* 0 .*} ".
+\\
 The main challenge with this problem is to count multiples of 4, including 0. 
 I tackled this challenge by having 3 states with 4 transitions that effectively "count" the digits between 0's.
 Since the problem states that the entire string doesn't have to be encased by the 0's, I have loops on the initial and success states that enable the NFA to count an entire word that contains the 0's.\\
@@ -200,29 +231,30 @@ The main challenge with this problem was figuring out how to count 10 positions 
 To overcome this, I created a loop of both 0's and 1's on the initial state to allow for strings longer than 10.
 I then have 9 states (10 transitions) that upon finding a 1, enter the success state. If one of those states finds a 0, it will simply move onto the next position.\\
 
-\subsubsection{Homework 2.2.1 Regular Expressions}
-The homework discussed in this section can be found \href{https://hackmd.io/@alexhkurz/S1EVYe7bO}{here}.\\
-This homework was to write regular expressions for the languages in exercises 2.3.4 and 2.5.3 (the problems from the previous homework).\\
-\textbf{Exercise 2.3.4}\\
-\textbf{Part A:}
-The regular expression for part A of exercise 2.3.4 is as follows:
-\begin{center}
-    \textit{( 0 + ... 9) * ( 0 ( 0 + ... 9 ) * 0 + ... )}
-\end{center}
-(We had gone over this in class.) The "..." is used to simplify and shorten the writing of the expression rather than writing all the digits 0 through 9.
+% \subsubsection{Homework 2.2.1 Regular Expressions}
+% The homework discussed in this section can be found \href{https://hackmd.io/@alexhkurz/S1EVYe7bO}{here}.\\
+% This homework was to write regular expressions for the languages in exercises 2.3.4 and 2.5.3 (the problems from the previous homework).\\
+% \textbf{Exercise 2.3.4}\\
+% \textbf{Part A:}
+% The regular expression for part A of exercise 2.3.4 is as follows:
+% \begin{center}
+%     \textit{( 0 + ... 9) * ( 0 ( 0 + ... 9 ) * 0 + ... )}
+% \end{center}
+% (We had gone over this in class.) The "..." is used to simplify and shorten the writing of the expression rather than writing all the digits 0 through 9.
 
-\textbf{Part B:}
-The regular expression for part B of exercise 2.3.4 is as follows:
-\begin{center}
-    \textit{( 1 + ... 9 ) * 0  + ( 0 + 2 + ...9 ) * 1 + ( 0 + 1 + 3 + ...9 ) * 2 + .... (0 + ...8 ) * 9 + \textepsilon }
-\end{center}
-This regular expression gets all the strings where the last digit has no appeared before in the string.
+% \textbf{Part B:}
+% The regular expression for part B of exercise 2.3.4 is as follows:
+% \begin{center}
+%     \textit{( 1 + ... 9 ) * 0  + ( 0 + 2 + ...9 ) * 1 + ( 0 + 1 + 3 + ...9 ) * 2 + .... (0 + ...8 ) * 9 + \textepsilon }
+% \end{center}
+% This regular expression gets all the strings where the last digit has no appeared before in the string.
 
-\textbf{Part C:}
-\begin{equation}
-    (0+1)^*\ 0\ ((0+1)^4)^*\ 0\ (0+1)^*
-\end{equation}
-For this problem, I needed some help. I utilized the website \href{https://regex101.com/}{Regex101} to help me create this regular expression. Since the above expression is not directly applicable in most programming languages, the regular expression I came up with in Regex is this:" \textit{.* 0 ((0\textpipe1)\{4\})* 0 .*} ".
+% \textbf{Part C:}
+% The regular expression for part C of exercise 2.3.4 is as follows:
+% \begin{equation}
+%     (0+1)^*\ 0\ ((0+1)^4)^*\ 0\ (0+1)^*
+% \end{equation}
+% For this problem, I needed some help. I utilized the website \href{https://regex101.com/}{Regex101} to help me create this regular expression. Since the above expression is not directly applicable in most programming languages, the regular expression I came up with in Regex is this:" \textit{.* 0 ((0\textpipe1)\{4\})* 0 .*} ".
 
 \textbf{Exercise 2.5.3}\\
 \textbf{Part A:}\\
@@ -333,30 +365,227 @@ My Abstract Syntax Tree can be found below. To get a better look, \href{https://
 \subsection{Initial Project Description}
 For the project, I will be using C as my programming language and I will be using the GCC compiler to compile it to Assembly. My C program will simply be a hard coded number and printing out the factorial of that number. My C program can be found \href{https://github.com/mamba72/CompilerConstruction_Assignments/blob/main/ExplainingACompiler/CProgram.c}{here}. My Assembly can be found \href{https://github.com/mamba72/CompilerConstruction_Assignments/blob/main/ExplainingACompiler/CProgram.out}{here}.
 
-\subsection{Project Instructions}
-The project will be to compile code from a programming language of your choice to assembly and to explain the assembly code and compilation process using the knowledge your learned in this course. 
+\begin{lstlisting}{language=C}
+        #include <stdio.h>
+
+        //Created a program does factorial
+        int main()
+        {
+            int num = 3;
+        
+            int product = 1;
+        
+            while(num > 0)
+            {
+                product *= num;
+        
+                num = num - 1;
+            }
+        
+            printf("Product:",product);
+        
+            return 0;
+        }
+\end{lstlisting}
+
+The following is the GCC assembly Output.
+
+\begin{lstlisting}{language=Assembly}
+    	.file	"CProgram.c"  --> This line says where the program came from
+        	.text --> This tells what encoding the file is in
+        	.globl	main --> This says that the "main" pointer is global.
+        	.type	main, @function --> This says that the "main" pointer points to a function
+        main: --> this is the label for the beginning of the main function
+        .LFB0: --> this is the label for the opening bracket in the main function
+        	.cfi_startproc --> used in debugging. Initializes internal data structures allowing the function to be in the .eh_frame 
+        	endbr64 --> inserts a NOP into the pipeline to prevent data hazards or corruption.
+        	pushq	%rbp --> this pushes a new context onto the stack because we entered a new code block.
+        	.cfi_def_cfa_offset 16 --> Changes the absolute offset that will be added to a defined register to compute the CFA address
+        	.cfi_offset 6, -16 --> the previous value of register 6 is saved at the offset -16 from the CFA pointer.
+        	movq	%rsp, %rbp --> memory copies the base point value into stack pointer reference, giving it a reference for where it is in memory.
+        	.cfi_def_cfa_register 6 --> will now use register 6 instead of the old CFA register. Offset is unchanged.
+        	subq	$16, %rsp --> integer subtraction. Moving the current pointer to show that we are in a new statement block.
+        	movl	$3, -4(%rbp) --> initializing the value of 3 into a new "num" variable. ("num" = -4(%rbp))
+        	movl	$1, -8(%rbp) --> initializing the value of 1 into a new "product" variable. ("product" = -8(%rbp))
+        	jmp	.L2 --> an unconditional jump to label L2
+        .L3: --> label L3. This is the inside of the while loop.
+        	movl	-8(%rbp), %eax --> this is putting the value of product into the register EAX as a temporary variable.
+        	imull	-4(%rbp), %eax --> Integer Multiplication. this is multiplying num by the temporary value in the register.
+        	movl	%eax, -8(%rbp) --> this is copying the new value of (product' * num) into the register for product.
+        	subl	$1, -4(%rbp) --> integer subtraction. Subtracting 1 from num in place.
+        .L2: --> label L2
+        	cmpl	$0, -4(%rbp) --> This is the condition in the while loop. Checks if "num" is greater than 0.
+        	jg	.L3 --> conditional jump when "num" > 0 is true. If true, it will enter the while.
+        	--> if we reached here, we are outside the while loop.
+        	movl	-8(%rbp), %eax --> this is putting the value of product into the register EAX as a temporary variable.
+        	cltq    --> converting integer into a Long for printing.
+        	movq	%rax, %rdi --> Puts the literal string "Product" onto the stack so it can be an argument in the printf function.
+        	movl	$0, %eax --> EAX is expected to hold the number of vector registers for the printf arguments, but we are simply printing an integer, so there is no need for a vector register.
+        	call	printf@PLT --> calls the printf function.
+        	movl	$0, %eax --> puts a 0 into the EAX register for the return statement.
+        	leave --> leaves the current statement block
+        	.cfi_def_cfa 7, 8 --> changing offset for the CFA register 7.
+        	ret --> returning from the subroutine.
+        	.cfi_endproc --> The ending to the .cfi_startproc to signify the end of the function to the debugger.
+        .LFE0: --> this is the section that helps the system handle exceptions and adds information for the debugger.
+        	.size	main, .-main
+        	.ident	"GCC: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0"
+        	.section	.note.GNU-stack,"",@progbits
+        	.section	.note.gnu.property,"a"
+        	.align 8
+        	.long	 1f - 0f
+        	.long	 4f - 1f
+        	.long	 5
+        0:
+        	.string	 "GNU"
+        1:
+        	.align 8
+        	.long	 0xc0000002
+        	.long	 3f - 2f
+        2:
+        	.long	 0x3
+        3:
+        	.align 8
+        4:
+
+\end{lstlisting}
 
 
-\medskip\noindent
-Pro tips:
-\begin{itemize}
-\item Choose a compiled (not interpreted) programming language.
-\item Choose a language that you find interesting anyway.
-\item Start early.
-\item Come to office hours. I have not run this part of the course before and I am really interested what you will find.
-\end{itemize}
- 
+
+\section{Homework Continued}
+\subsection{Week 10}
+\subsubsection{Creating a Proof Tree}
+The instructions for this assignment can be seen \href{https://hackmd.io/@alexhkurz/SkZELd3X5}{here}.
+The point of this assignment was to create the tree of steps the interpreter would take while completing the following program:
+
+\begin{lstlisting}
+
+int x;
+{
+    x = 2 ;
+    bool x = false && x ;
+    y = y++ + ++y ;
+}
+x = y ;
+
+\end{lstlisting}
+
+
+\includegraphics[scale=0.18]{ProofTree.png}
+
+\begin{enumerate}
+    \item\begin{prooftree} % 1. declaration
+            \AxiomC{}
+            \UnaryInfC{$\gamma \rightarrow  T x; \downarrow \gamma(x := null)$}
+        \end{prooftree}
+    \item\begin{prooftree} % 2. interpretation of statements
+            \AxiomC{$\gamma \rightarrow s \downarrow \gamma`$}
+            \AxiomC{$\gamma` \rightarrow S2...Sn\downarrow \gamma``$}
+            \BinaryInfC{$\gamma \rightarrow S1...Sn \downarrow \gamma``$}
+        \end{prooftree}
+    \item \begin{prooftree} % 3. block statements
+            \AxiomC{$\gamma. \rightarrow S1...Sn \downarrow \gamma`.\delta$}
+            \UnaryInfC{$\gamma \rightarrow \{S1...Sn\} \downarrow \gamma`$}
+        \end{prooftree}
+    \item \begin{prooftree} % 4. interpretation of statements
+            \AxiomC{$\gamma \rightarrow s \downarrow \gamma`$}
+            \AxiomC{$\gamma` \rightarrow S2...Sn\downarrow \gamma``$}
+            \BinaryInfC{$\gamma \rightarrow S1...Sn \downarrow \gamma``$}
+        \end{prooftree}
+    \item \begin{prooftree} % 5. going from expression to statement
+            \AxiomC{$\gamma \rightarrow e \downarrow <v,\gamma`> $}
+            \UnaryInfC{$\gamma \rightarrow e; \downarrow \gamma`$}
+        \end{prooftree}
+    \item \begin{prooftree} % 6. assignment rule
+            \AxiomC{$\gamma \rightarrow e \downarrow <v,\gamma`> $}
+            \UnaryInfC{$\gamma \rightarrow x=e \downarrow <v,\gamma`(x:=v)>$}
+        \end{prooftree}
+    \item \begin{prooftree} % 7. lookup
+            \AxiomC{}
+            \UnaryInfC{$\gamma \rightarrow x \downarrow v$}
+        \end{prooftree}
+    \item \begin{prooftree} % 8. going from expression to statement
+            \AxiomC{$\gamma \rightarrow e \downarrow <v,\gamma`> $}
+            \UnaryInfC{$\gamma \rightarrow e; \downarrow \gamma`$}
+        \end{prooftree}   
+    \item\begin{prooftree} % 9. declaration
+            \AxiomC{}
+            \UnaryInfC{$\gamma \rightarrow  T x; \downarrow \gamma(x := null)$}
+        \end{prooftree}
+    \item\begin{prooftree} % 10. assignment rule
+            \AxiomC{$\gamma \rightarrow e \downarrow <v,\gamma`> $}
+            \UnaryInfC{$\gamma \rightarrow x=e \downarrow <v,\gamma`(x:=v)>$}
+        \end{prooftree}
+    \item\begin{prooftree} % 11. AND rule
+            \AxiomC{$\gamma \rightarrow a \downarrow u$}
+            \AxiomC{$\gamma \rightarrow b \downarrow v$}
+            \BinaryInfC{$\gamma \rightarrow a\&\&b \downarrow u\ x\ v$}
+        \end{prooftree}
+    \item\begin{prooftree} % 12a. lookup
+            \AxiomC{}
+            \UnaryInfC{$\gamma \rightarrow x \downarrow v$}
+        \end{prooftree}
+    \item\begin{prooftree} % 13. going from expression to statement
+            \AxiomC{$\gamma \rightarrow e \downarrow <v,\gamma`> $}
+            \UnaryInfC{$\gamma \rightarrow e; \downarrow \gamma`$}
+        \end{prooftree}
+    \item\begin{prooftree} % 14. assignment rule
+            \AxiomC{$\gamma \rightarrow e \downarrow <v,\gamma`> $}
+            \UnaryInfC{$\gamma \rightarrow x=e \downarrow <v,\gamma`(x:=v)>$}
+        \end{prooftree}
+    \item\begin{prooftree} % 15. addition rule
+            \AxiomC{$\gamma \rightarrow x \downarrow v $}
+            \AxiomC{$\gamma \rightarrow x \downarrow v $}
+            \BinaryInfC{$\gamma \rightarrow a + b \downarrow <v,\gamma`>$}
+        \end{prooftree}
+    \item\begin{prooftree} % 16. Post and Pre Increment
+            \AxiomC{}
+            \UnaryInfC{$\gamma \rightarrow x++ \downarrow <v,\gamma`(x:=v+1)>$}
+        \end{prooftree}
+    \item\begin{prooftree} % 17. Expression to Statement
+            \AxiomC{$\gamma \rightarrow e \downarrow <v,\gamma`> $}
+            \UnaryInfC{$\gamma \rightarrow e; \downarrow \gamma`$}
+        \end{prooftree}
+    \item\begin{prooftree} % 18. Assignment
+            \AxiomC{$\gamma \rightarrow e \downarrow <v,\gamma`> $}
+            \UnaryInfC{$\gamma \rightarrow x=e \downarrow <v,\gamma`(x:=v)>$}
+        \end{prooftree}
+    \item\begin{prooftree} % 19. Assignment
+            \AxiomC{}
+            \UnaryInfC{$\gamma \rightarrow x \downarrow v$}
+        \end{prooftree}
+    
+\end{enumerate}
+
+
+
 \section{Conclusions}\label{conclusions}
 
 %(approx 400 words)
 
 %In the conclusion, I want a critical reflection on the content of the course. Step back from the technical details. How does the course fit into the wider world of programming languages and software engineering?
 
-\begin{thebibliography}{99}
-\bibitem[HMU]{Hopcroft}
-	John E. Hopcroft, Rajeev Motwani, Jeffrey D. Ullman:
-\href{http://ce.sharif.edu/courses/94-95/1/ce414-2/resources/root/Text%20Books/Automata/John%20E.%20Hopcroft,%20Rajeev%20Motwani,%20Jeffrey%20D.%20Ullman-Introduction%20to%20Automata%20Theory,%20Languages,%20and%20Computations-Prentice%20Hall%20(2006).pdf}{Introduction to automata theory, languages, and computation,} 3rd Edition. Pearson international edition, Addison-Wesley 2007
+% \begin{thebibliography}{99}
+% \bibitem[HMU]{Hopcroft}
+% 	John E. Hopcroft, Rajeev Motwani, Jeffrey D. Ullman:
+% \href{http://ce.sharif.edu/courses/94-95/1/ce414-2/resources/root/Text\%20Books/Automata/John\%20E.\%20Hopcroft,\%20Rajeev\%20Motwani,\%20Jeffrey\%20D.\%20Ullman-Introduction\%20to\%20Automata\%20Theory,\%20Languages,\%20and\%20Computations-Prentice\%20Hall\%20(2006).pdf}{Introduction to automata theory, languages, and computation,} 3rd Edition. Pearson international edition, Addison-Wesley 2007
 
-\end{thebibliography}
+
+% \end{thebibliography}
+
+\medskip
+
+\printbibliography
+
+
+\cite{noauthor_cfi_nodate}
+\cite{noauthor_guide_nodate}
+\cite{godbolt_compiler_nodate}
+\cite{john_e._introduction_nodate}
+\cite{noauthor_assembly_nodate}
+\cite{noauthor_macos_nodate}
+\cite{noauthor_x86_nodate-1}
+\cite{noauthor_x86_nodate}
+
 
 \end{document}
